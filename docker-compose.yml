@@ -23,11 +23,6 @@ services:
     volumes:
       - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
       - .:/var/www/html
-    environment:
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USER=guest
-      - RABBITMQ_PASSWORD=guest
     healthcheck:
       test: ["CMD", "php", "-r", "echo 'OK';"]
       interval: 30s
@@ -57,24 +52,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    networks:
-      - laravel-network
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-    container_name: laravel_rabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    restart: unless-stopped
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
     networks:
       - laravel-network
 
